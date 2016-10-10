@@ -2,8 +2,6 @@ var express = require('express');
 var app = express();
 
 var ranChars = require('./RandomCharacter.js');
-//console.out(characters.length);
-
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -15,9 +13,11 @@ app.set('view engine', 'ejs');
 
 // index page 
 app.get('/', function(req, res) {
-	var roles = ranChars.numberOfRoles();
+	var numberOfRoles = ranChars.numberOfRoles;
+	var yourRole = ranChars.getRandomCharacter();
+	//console.log(luckyNumber);
     res.render('pages/index', {
-    	numOfRoles: roles
+    	yourRole: yourRole
     });
 });
 

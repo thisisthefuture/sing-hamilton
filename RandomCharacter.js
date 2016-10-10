@@ -1,12 +1,26 @@
 fs = require('fs');
-var singerNumber = 3; //process.argv[2];
+var singerNumber = 14; //process.argv[2];
 var random = 0;
 var newCharacter = false;
 var characterAssignment = [];
 
 var characters = setup();
 
+module.exports.luckyNumber = 4;
+module.exports.characterAssignment = characterAssignment;
 
+module.exports.getRandomCharacter = getRandomCharacter;
+/*
+
+1. READ the FILE
+2. PREP the program
+	a. create array from file
+	b. verify file
+3. GET # of Singers
+4. ASSIGN singers
+5. PRESENT results
+
+*/
 
 
 
@@ -20,9 +34,15 @@ function printArray (array) {
 	}
 }
 
-var numberOfRoles = function()
+function numberOfRoles ()
 {
+	//console.log(characters.length);
 	return characters.length;
+}
+
+function getRandomCharacter()
+{
+	return characterAssignment[Math.floor((Math.random() * characterAssignment.length))];
 }
 
 function setup () {
@@ -62,7 +82,7 @@ function setup () {
 		for (var i = 0; i < singerNumber; i++) {
 			//console.log('finding character for singer #' + (i+1));
 			while (newCharacter == false) {
-
+				
 				random = Math.floor((Math.random() * characters.length));
 				//console.log('Considering....' + characters[random].name + '\n');
 
@@ -86,5 +106,3 @@ function setup () {
 	console.log('done setup');
 }
 
-module.exports.numberOfRoles = numberOfRoles;
-module.exports.characters = characters;
