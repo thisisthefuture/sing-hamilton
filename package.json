@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thisisthefuture/sing-hamilton.git"
+  },
+  "author": "thisisthefuture",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thisisthefuture/sing-hamilton/issues"
+  },
+  "homepage": "https://github.com/thisisthefuture/sing-hamilton#readme"
 }
