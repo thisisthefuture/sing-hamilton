@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>Your assignments?</title>
+	</head>
+	<body>
+		<h1>Song: Alexander Hamilton</h1>
+		
+		<table>
+			<% assignments.forEach(function(el, index) { %>
+			<tr>
+				<td>#<%= index+1 %></td>
+				<td> <%= el %> </td>
+			</tr>
+			
+			<% }); %>
+		</table>
+	</body>
+</html>

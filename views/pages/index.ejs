@@ -1,12 +1,21 @@
 <html>
 	<head>
 		<title>Who will you sing?</title>
-		<script src="RandomCharacter.js"></script>
 	</head>
 	<body>
 		<h1>Song: Alexander Hamilton</h1>
 		How many people are singing?
 
-		Your role: <%= yourRole %> out of <%= numberOfCharacters %>
+		<form method="POST" action="/numberOfSingers">
+			<select name="numberOfSingers">
+				<% for (var i = 1 ; i < numberOfCharacters+1 ; i++) { %>
+					<option value="<%= i %>"><%= i %></option>
+				
+				<% } %>
+			</select>
+			<button type="submit">Let's go!</button>
+		</form>
+		<p>
+		</p>
 	</body>
 </html>

@@ -1,8 +1,11 @@
 var express = require('express');
 var http = require('http');
 var app = express();
-
 var ranChars = require('./RandomCharacter.js');
+
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: true}));
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -14,25 +17,23 @@ app.set('view engine', 'ejs');
 
 // index page 
 app.get('/', function(req, res) {
-	var yourRole = ranChars.getRandomCharacter();
+//	var yourRole = ranChars.getRandomCharacter();
 	var numberOfCharacters = ranChars.numberOfRoles;
-	console.log(numberOfCharacters);
+	//console.log(numberOfCharacters);
     res.render('pages/index', {
-    	yourRole: yourRole,
+    	//yourRole: yourRole,
     	numberOfCharacters: numberOfCharacters
     });
 });
 
-app.get('/assignments', function(req, res) {
-	response = {
-		numberOfSingers: req.number
-	}
-	console.log(repsonse);
-});
 
-app.post('/', function(req, res) {
+app.post('/numberOfSingers', function(req, res) {
 	console.log('got a POST request');
-	res.send('hello post');
+	console.log(req.body);
+	var assignments = ranChars.makeAssignments(req.body.numberOfSingers);
+	res.render('pages/assignments', {
+		assignments: assignments
+	});
 });
 
 app.listen(app.get('port'), function() {
