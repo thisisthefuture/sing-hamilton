@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/thisisthefuture/sing-hamilton/issues"
   },
-  "homepage": "https://github.com/thisisthefuture/sing-hamilton#readme"
+  "homepage": "https://github.com/thisisthefuture/sing-hamilton#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2"
+  }
 }
