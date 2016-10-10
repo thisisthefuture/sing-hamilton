@@ -28,8 +28,7 @@ app.get('/', function(req, res) {
 
 
 app.post('/numberOfSingers', function(req, res) {
-	console.log('got a POST request');
-	console.log(req.body);
+	console.log('got a POST request ' + req.body + '\n');
 	var assignments = ranChars.makeAssignments(req.body.numberOfSingers);
 	res.render('pages/assignments', {
 		assignments: assignments

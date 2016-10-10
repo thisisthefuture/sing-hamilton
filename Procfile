@@ -1,1 +1,1 @@
-web: node RandomCharacter.js
+web: node index.js
