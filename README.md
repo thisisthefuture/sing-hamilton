@@ -3,5 +3,8 @@ Ready to belt out some Hamilton yet need an easy fair way of figuring out who's 
 
 Sing Hamilton randomly assigns you and your friends Hamilton roles.
 
+# to-do
+* evenly assign all available roles when # of roles > # of singers
+
 
 
