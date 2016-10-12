@@ -1,6 +1,7 @@
 var fs = require('fs');
-var singerNumber = process.argv[2]; 		// # of singers passed from the console
-var runFromConsole = process.argv[3];		// an argument to check if the program is ran from the console (1 = true)
+var runFromConsole = process.argv[2];		// an argument to check if the program is ran from the console (1 = true)
+var singerNumber = process.argv[3]; 		// # of singers passed from the console
+var namesFromConsole = process.argv[4];
 var numberOfRoles = 0;									// variable for the # of roles for the selected song
 var characterAssignment = [];						// array of assignments of the roles; items in the arary are objects
 																				/*		{
@@ -9,6 +10,7 @@ var characterAssignment = [];						// array of assignments of the roles; items i
 																							}
 																				*/
 var characters = [];										// array of the characters in the song
+var possibleCharacters = [];
 var Singer = function(name) {
 	this.name = name;
 	this.role = [];
@@ -17,12 +19,16 @@ var Singer = function(name) {
 
 setup();
 
-if (runFromConsole == 1) {
-	makeAssignments();										// if we're running from the console, make assignments automatically; e.g., not waiting for a GET req
+if (runFromConsole == 1 && namesFromConsole != undefined) {
+	makeAssignmentsByName(namesFromConsole);
+}
+else if (runFromConsole == 1) {
+	makeAssignmentsByTotalSingers();										// if we're running from the console, make assignments automatically; e.g., not waiting for a GET req
 }
 
 module.exports.numberOfRoles = numberOfRoles;							// share variables to be used in the webpage
-module.exports.makeAssignments = makeAssignments;
+module.exports.makeAssignmentsByTotalSingers = makeAssignmentsByTotalSingers;
+module.exports.makeAssignmentsByName = makeAssignmentsByName;
 /*
 
 1. READ the FILE
@@ -62,23 +68,40 @@ function getRandomCharacter()
 }
 
 function checkSingerValue(passedSingerNumber, consoleSingerNumber) {
+	console.log('in checkSingerValue: passedSingerNumber = ' + passedSingerNumber + ' consoleSingerNumber  = ' + consoleSingerNumber);
+
 	if (consoleSingerNumber == undefined)
+	{
 		consoleSingerNumber = 1;
+	}
 
 	if (passedSingerNumber > 0 && consoleSingerNumber > 0)
 	{
+		console.log(passedSingerNumber + ' ' + consoleSingerNumber);
 		if (passedSingerNumber > consoleSingerNumber)
+		{
+			console.log('hi?');
 			return passedSingerNumber;
+		}
 		else
-			return consoleSingerNumber
+			return consoleSingerNumber;
+	}
+	else if (passedSingerNumber > consoleSingerNumber) {
+		return passedSingerNumber;
+	}
+	else if (consoleSingerNumber > passedSingerNumber) {
+		return consoleSingerNumber;
 	}
 	else if (passedSingerNumber == undefined && consoleSingerNumber != undefined)
 		return consoleSingerNumber;
 	else if (passedSingerNumber != undefined && consoleSingerNumber == undefined)
 		return passedSingerNumber;
 	else
+	{
+		console.log('are you here???');
+		console.log('passedSingerNumber = ' + passedSingerNumber + ' consoleSingerNumber = ' + consoleSingerNumber);
 		return 1; // there must be at least one singer
-
+	}
 }
 
 
@@ -120,10 +143,40 @@ function addRoleToList (singer, role) {
 
 }
 
-function makeAssignments(passedSingerNumber) {
-//	console.log('from POST # of singers = ' + passedSingerNumber);
+function makeAssignmentsByName(singers) {
+		var singersList = singers.split(', '); // TODO: need to make this more resilient to what ppl will type
+		reset();
+
+		possibleCharacters = characters.slice();
+		singerNumber = singersList.length;
+		//console.log('our list of singers: ' + singersList);
+		for (var i = 0; i < singerNumber; i++) {
+			createSingers(i, singersList[i], possibleCharacters);
+		}
+		return characterAssignment;
+}
+
+function createSingers(i, name, possibleCharacters) {
+		characterAssignment[i] = new Singer(name);	// temporarily using the loop iteration value as the Singer's name
+		//console.log('i ' + i + ' name: ' + name + ' possibleCharacters:' + possibleCharacters);
+		for (var j = i; j < numberOfRoles; j = j + singerNumber) {
+			//console.log('singer# ' + i + ' j = ' + j + ' singer#:' + singerNumber);
+			//console.log('role...' + possibleCharacters[j].name);
+			addRoleToList(characterAssignment[i], possibleCharacters[j]);
+		}
+}
+
+function reset() {
 	characterAssignment.splice(0, characterAssignment.length); 	// cleaning any lingering old data
-	var possibleCharacters = characters.slice(); 								// lets not touch original list of characters. splice() clons array and returns reference to new array
+	possibleCharacters = characters.slice(); 								// lets not touch original list of characters. splice() clons array and returns reference to new array
+	singerNumber = 0;
+	console.log('resetting values');
+
+}
+
+function makeAssignmentsByTotalSingers(passedSingerNumber) {
+	reset();
+	console.log('from POST # of singers = ' + passedSingerNumber);
 
 	var singers = checkSingerValue(passedSingerNumber, singerNumber);
 	var newCharacter = false;
@@ -138,26 +191,20 @@ function makeAssignments(passedSingerNumber) {
 	}
 	else {
 		singerNumber = +singers;
+		console.log('singers = ' + singerNumber);
 	}
 
-	console.log('finding assignments for ' + singerNumber + ' people\n');
+	//console.log('finding assignments for ' + singerNumber + ' people\n');
 
-
-	// if singerNumber < numberOfRoles
 /*
 	if singerNumber == 1 --> you sing everyone!
 	if singerNumber == 2 --> singers alternate roles
 	if singerNumber == 3 -->
 */
-
-	for (var i = 0; i < singerNumber; i++) {
-		characterAssignment[i] = new Singer(i);
-		for (var j = i; j < numberOfRoles; j = j + singerNumber) {
-			//console.log('singer# ' + i + ' j = ' + j + ' singer#:' + singerNumber);
-			//console.log('role...' + possibleCharacters[j].name);
-			addRoleToList(characterAssignment[i], possibleCharacters[j]);
+		for (var i = 0; i < singerNumber; i++) {
+			createSingers(i, i+1, possibleCharacters);
 		}
-	}
+
 
 
 	// if singerNumber == numberOfRoles --> randomly assigns roles out

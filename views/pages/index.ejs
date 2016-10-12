@@ -1,11 +1,20 @@
 			<h1>Song: Alexander Hamilton</h1>
+
+			<label for="singerList">Who's singing?</label>
+			<form method="POST" action="/whosSinging">
+				<input type="text" class="title" name="singerList" placeholder="alice, sage, ginger">
+				<p>
+					<input type="submit" value="Not throwin' away your shot">
+				</p>
+			</form>
+
 			<label>How many people are singing?</label>
 			<form method="POST" action="/numberOfSingers">
 				<select name="numberOfSingers">
 					<% for (var i = 1 ; i < numberOfCharacters+1 ; i++) { %>
 						<option value="<%= i %>"><%= i %></option>
 
-					<% } %>
-				</select>
-				<button type="submit">Let's go!</button>
-			</form>
+						<% } %>
+					</select>
+					<button type="submit">Let's go!</button>
+				</form>

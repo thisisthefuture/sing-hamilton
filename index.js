@@ -31,10 +31,16 @@ app.get('/', function(req, res) {
     });
 });
 
+app.post('/whosSinging', function(req, res) {
+	var singers = ranChars.makeAssignmentsByName(req.body.singerList);
+	res.render('pages/assignments', {
+		assignments: singers
+	});
+});
 
 app.post('/numberOfSingers', function(req, res) {
-	console.log('got a POST request ' + req.body + '\n');
-	var assignments = ranChars.makeAssignments(req.body.numberOfSingers);
+	console.log('number of singers from website = ' + req.body.numberOfSingers);
+	var assignments = ranChars.makeAssignmentsByTotalSingers(req.body.numberOfSingers);
 	res.render('pages/assignments', {
 		assignments: assignments
 	});
