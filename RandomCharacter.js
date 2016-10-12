@@ -137,8 +137,6 @@ function setup () {
 }
 
 function addRoleToList (singer, role) {
-	console.log('giving ' + singer.name + ' the role of ' + role.name);
-
 	singer.role.push(role.name);
 
 }
