@@ -1,18 +1,27 @@
 var fs = require('fs');
-var singerNumber = process.argv[2];
-var runFromConsole = process.argv[3];
-var numberOfRoles = 0;
-var characterAssignment = [];
-var characters = [];
+var singerNumber = process.argv[2]; 		// # of singers passed from the console
+var runFromConsole = process.argv[3];		// an argument to check if the program is ran from the console (1 = true)
+var numberOfRoles = 0;									// variable for the # of roles for the selected song
+var characterAssignment = [];						// array of assignments of the roles; items in the arary are objects
+																				/*		{
+																								name: string,
+																								roles: array
+																							}
+																				*/
+var characters = [];										// array of the characters in the song
+var Singer = function(name) {
+	this.name = name;
+	this.role = [];
+};
+
 
 setup();
 
 if (runFromConsole == 1) {
-	makeAssignments();
+	makeAssignments();										// if we're running from the console, make assignments automatically; e.g., not waiting for a GET req
 }
 
-//module.exports.getRandomCharacter = getRandomCharacter;
-module.exports.numberOfRoles = numberOfRoles;
+module.exports.numberOfRoles = numberOfRoles;							// share variables to be used in the webpage
 module.exports.makeAssignments = makeAssignments;
 /*
 
@@ -26,13 +35,14 @@ module.exports.makeAssignments = makeAssignments;
 
 */
 
+// Is this character already taken by a singer?
 function findCharacter (character, potentialAddition) {
 	return character.name === potentialAddition;
 }
 
 function printArray (array) {
 	for (var i = 0 ; i < array.length ; i++) {
-		//console.log(array[i]);
+		console.log(array[i]);
 	}
 }
 
@@ -52,13 +62,16 @@ function getRandomCharacter()
 }
 
 function checkSingerValue(passedSingerNumber, consoleSingerNumber) {
+	if (consoleSingerNumber == undefined)
+		consoleSingerNumber = 1;
+
 	if (passedSingerNumber > 0 && consoleSingerNumber > 0)
 	{
 		if (passedSingerNumber > consoleSingerNumber)
 			return passedSingerNumber;
 		else
 			return consoleSingerNumber
-	} 
+	}
 	else if (passedSingerNumber == undefined && consoleSingerNumber != undefined)
 		return consoleSingerNumber;
 	else if (passedSingerNumber != undefined && consoleSingerNumber == undefined)
@@ -68,26 +81,31 @@ function checkSingerValue(passedSingerNumber, consoleSingerNumber) {
 
 }
 
+
 function setup () {
 	//var characters = [];
 
-
-	var charactersFromFile = fs.readFileSync('ENSEMBLE-Characters', 'utf8') //, function (err, data) {
+	var charactersFromFile = fs.readFileSync('songs/SONG Alexander Hamilton', 'utf8'); //, function (err, data) {
 		/* if (err) {
 			return console.log(err);
 		}
 		console.log('done reading'); */
 	charactersFromFile = charactersFromFile.toString().split('\n');
-	setNumberOfRoles(charactersFromFile.length);
 
 	for (var i in charactersFromFile) {
 		//console.log(charactersFromFile[i]);
-
-		characters[i] = {
-			'name': charactersFromFile[i].split(', ')[0],
-			'gender': charactersFromFile[i].split(', ')[1].replace('\r', '')
+		if (charactersFromFile[i] != '\r')
+		{
+			characters[i] = {
+				'name': charactersFromFile[i].split('\n')[0].replace('\r', ''),
+	//			'gender': charactersFromFile[i].split(', ')[1].replace('\r', '') // trimmed on ',' when using the ENSEMBLE-Characters file
+			}
+		} else { // if we hit the empty line we're done with the file
+			break;
 		}
 	}
+
+	setNumberOfRoles(characters.length);
 
 	if (characters == undefined) {
 		console.error('characters are missing...');
@@ -95,33 +113,59 @@ function setup () {
 	}
 }
 
+function addRoleToList (singer, role) {
+	console.log('giving ' + singer.name + ' the role of ' + role.name);
+
+	singer.role.push(role.name);
+
+}
+
 function makeAssignments(passedSingerNumber) {
 //	console.log('from POST # of singers = ' + passedSingerNumber);
-	characterAssignment.splice(0, characterAssignment.length); // cleaning any lingering old data
-	var possibleCharacters = characters.slice(); // lets not touch original list of characters. splice() clons array and returns reference to new array
+	characterAssignment.splice(0, characterAssignment.length); 	// cleaning any lingering old data
+	var possibleCharacters = characters.slice(); 								// lets not touch original list of characters. splice() clons array and returns reference to new array
 
-//	console.log(possibleCharacters.length + 'unchoosen characters');
-
-	var singers = checkSingerValue(passedSingerNumber, 1);
+	var singers = checkSingerValue(passedSingerNumber, singerNumber);
 	var newCharacter = false;
 	var random = 0;
 
 	if (singers == 0) {
 		console.error('nobody is singing :(');
 		throw new Error('nobody is singing..');
-	} else if (singers > possibleCharacters.length) {	
+	} else if (singers > possibleCharacters.length) {
 		console.error('whoops... too many singers right now. Only support 1 role per singer');
 		throw new Error('too many people singing')
 	}
 	else {
-		singerNumber = singers;
+		singerNumber = +singers;
 	}
 
 	console.log('finding assignments for ' + singerNumber + ' people\n');
+
+
+	// if singerNumber < numberOfRoles
+/*
+	if singerNumber == 1 --> you sing everyone!
+	if singerNumber == 2 --> singers alternate roles
+	if singerNumber == 3 -->
+*/
+
+	for (var i = 0; i < singerNumber; i++) {
+		characterAssignment[i] = new Singer(i);
+		for (var j = i; j < numberOfRoles; j = j + singerNumber) {
+			//console.log('singer# ' + i + ' j = ' + j + ' singer#:' + singerNumber);
+			//console.log('role...' + possibleCharacters[j].name);
+			addRoleToList(characterAssignment[i], possibleCharacters[j]);
+		}
+	}
+
+
+	// if singerNumber == numberOfRoles --> randomly assigns roles out
+	/*
 	for (var i = 0; i < singerNumber; i++) {
 		//console.log('finding character for singer #' + (i+1));
 		while (newCharacter == false) {
-			
+
 			random = Math.floor((Math.random() * possibleCharacters.length));
 			//console.log('Considering....' + characters[random].name + '\n');
 
@@ -134,9 +178,10 @@ function makeAssignments(passedSingerNumber) {
 				// keep looking...
 				console.error('this should never happen if we are removing elements from the array after we add them');
 			}
+			console.log(characterAssignment[i]);
 		}
 		newCharacter = false;
-	} 
+	} */
 	//console.log('done setup w/' + getNumberOfRoles());
 	return characterAssignment;
 

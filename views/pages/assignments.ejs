@@ -4,14 +4,14 @@
 	</head>
 	<body>
 		<h1>Song: Alexander Hamilton</h1>
-		
+
 		<table>
 			<% assignments.forEach(function(el, index) { %>
 			<tr>
-				<td>#<%= index+1 %></td>
-				<td> <%= el %> </td>
+				<td>#<%= el.name %></td>
+				<td> <% el.role = el.role.join().replace(/\,/g,', '); %> <%= el.role %> </td>
 			</tr>
-			
+
 			<% }); %>
 		</table>
 	</body>

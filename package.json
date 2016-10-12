@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/thisisthefuture/sing-hamilton#readme",
   "dependencies": {
-    "body-parser": "^1.15.2"
+    "body-parser": "^1.15.2",
+    "express-ejs-layouts": "^2.2.0"
   }
 }
