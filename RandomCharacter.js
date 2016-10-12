@@ -116,7 +116,7 @@ function setup () {
 	charactersFromFile = charactersFromFile.toString().split('\n');
 
 	for (var i in charactersFromFile) {
-		//console.log(charactersFromFile[i]);
+		console.log(charactersFromFile[i]);
 		if (charactersFromFile[i] != '\r')
 		{
 			characters[i] = {
