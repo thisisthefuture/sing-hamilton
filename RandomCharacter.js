@@ -11,6 +11,8 @@ var characterAssignment = [];						// array of assignments of the roles; items i
 																				*/
 var characters = [];										// array of the characters in the song
 var possibleCharacters = [];
+var re = /\r\n|\n\r|\n|\r/g;
+
 var Singer = function(name) {
 	this.name = name;
 	this.role = [];
@@ -120,7 +122,7 @@ function setup () {
 		if (charactersFromFile[i] != '\r')
 		{
 			characters[i] = {
-				'name': charactersFromFile[i].split(/(\r\n|\n|\r)/gm)[0].replace(/(\r\n|\n|\r)/gm, ''),
+				'name': charactersFromFile[i].split(re)[0].replace(re, ''),
 	//			'gender': charactersFromFile[i].split(', ')[1].replace('\r', '') // trimmed on ',' when using the ENSEMBLE-Characters file
 			}
 		} else { // if we hit the empty line we're done with the file
