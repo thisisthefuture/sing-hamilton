@@ -120,7 +120,7 @@ function setup () {
 		if (charactersFromFile[i] != '\r')
 		{
 			characters[i] = {
-				'name': charactersFromFile[i].split('\n')[0].replace('\r', ''),
+				'name': charactersFromFile[i].split('\n')[0].replace(/(\r\n|\n|\r)/gm, ''),
 	//			'gender': charactersFromFile[i].split(', ')[1].replace('\r', '') // trimmed on ',' when using the ENSEMBLE-Characters file
 			}
 		} else { // if we hit the empty line we're done with the file
