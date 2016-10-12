@@ -118,8 +118,8 @@ function setup () {
 	charactersFromFile = charactersFromFile.toString().split('\n');
 
 	for (var i in charactersFromFile) {
-		console.log(charactersFromFile[i]);
-		if (charactersFromFile[i] != '\r')
+		//console.log(charactersFromFile[i] + ' length =' + charactersFromFile[i].length);
+		if (charactersFromFile[i].length > 1) // assumption: there will be no valid character name of length 1
 		{
 			characters[i] = {
 				'name': charactersFromFile[i].split(re)[0].replace(re, ''),
