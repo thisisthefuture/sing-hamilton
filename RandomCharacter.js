@@ -144,6 +144,10 @@ function addRoleToList (singer, role) {
 }
 
 function makeAssignmentsByName(singers) {
+		if (singers == undefined || singers == '')
+		{
+			singers = 'You';
+		}
 		var singersList = singers.split(', '); // TODO: need to make this more resilient to what ppl will type
 		reset();
 
@@ -170,7 +174,7 @@ function reset() {
 	characterAssignment.splice(0, characterAssignment.length); 	// cleaning any lingering old data
 	possibleCharacters = characters.slice(); 								// lets not touch original list of characters. splice() clons array and returns reference to new array
 	singerNumber = 0;
-	console.log('resetting values');
+	//console.log('resetting values');
 
 }
 
