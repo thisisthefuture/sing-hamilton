@@ -3,6 +3,7 @@ var expressLayouts = require('express-ejs-layouts');
 var http = require('http');
 var app = express();
 var ranChars = require('./RandomCharacter.js');
+var allSongs = require('./getAllSongs.js');
 
 var bodyParser = require('body-parser');
 
@@ -23,18 +24,27 @@ app.set('port', (process.env.PORT || 5000));
 // index page
 app.get('/', function(req, res) {
 //	var yourRole = ranChars.getRandomCharacter();
+	var songList = allSongs.getSongList();
 	var numberOfCharacters = ranChars.numberOfRoles;
 	//console.log(numberOfCharacters);
     res.render('pages/index', {
     	//yourRole: yourRole,
+			songList: songList,
     	numberOfCharacters: numberOfCharacters
     });
 });
 
+/* app.post('/pickSong'), function(req, res) {
+		var choosenSong = req.body.songChoice;
+
+};
+*/
+
 app.post('/whosSinging', function(req, res) {
-	var singers = ranChars.makeAssignmentsByName(req.body.singerList);
+	var singers = ranChars.makeAssignmentsByName(req.body.singerList, req.body.songChoice);
 	res.render('pages/assignments', {
-		assignments: singers
+		assignments: singers,
+		song: req.body.songChoice
 	});
 });
 

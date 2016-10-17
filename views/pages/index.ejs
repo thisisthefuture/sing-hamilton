@@ -1,14 +1,30 @@
-			<h1>Song: Alexander Hamilton</h1>
+			<!-- <label for="songChoice">Song: </label>
+			<form method="POST" action="/pickSong">
+				<select name="songChoice">
+					<% for (var i = 0 ; i < songList.length ; i++) { %>
+						<option value="<%= songList[i] %>"><%= songList[i] %></option>
+
+					<% } %>
+				</select>
+				<button type="submit">Sing this!</button>
+			</form> -->
 
 			<label for="singerList">Who's singing?</label>
 			<form method="POST" action="/whosSinging">
-				<input type="text" class="title" name="singerList" placeholder="alice, sage, ginger">
+				<select name="songChoice">
+					<% for (var i = 0 ; i < songList.length ; i++) { %>
+						<option value="<%= songList[i] %>"><%= songList[i] %></option>
+
+					<% } %>
+				</select>
 				<p>
-					<input type="submit" value="Not throwin' away your shot">
+					<input type="text" class="title" name="singerList" placeholder="alice, sage, ginger">
 				</p>
+					<input type="submit" value="Not throwin' away your shot">
+				
 			</form>
 
-			<label>How many people are singing?</label>
+			<!-- <label>How many people are singing?</label>
 			<form method="POST" action="/numberOfSingers">
 				<select name="numberOfSingers">
 					<% for (var i = 1 ; i < numberOfCharacters+1 ; i++) { %>
@@ -17,4 +33,4 @@
 						<% } %>
 					</select>
 					<button type="submit">Let's go!</button>
-				</form>
+				</form> -->

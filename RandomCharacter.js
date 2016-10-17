@@ -82,7 +82,6 @@ function checkSingerValue(passedSingerNumber, consoleSingerNumber) {
 		console.log(passedSingerNumber + ' ' + consoleSingerNumber);
 		if (passedSingerNumber > consoleSingerNumber)
 		{
-			console.log('hi?');
 			return passedSingerNumber;
 		}
 		else
@@ -100,8 +99,6 @@ function checkSingerValue(passedSingerNumber, consoleSingerNumber) {
 		return passedSingerNumber;
 	else
 	{
-		console.log('are you here???');
-		console.log('passedSingerNumber = ' + passedSingerNumber + ' consoleSingerNumber = ' + consoleSingerNumber);
 		return 1; // there must be at least one singer
 	}
 }
@@ -116,25 +113,27 @@ function setup () {
 		}
 		console.log('done reading'); */
 	charactersFromFile = charactersFromFile.toString().split('\n');
+	loadCharacters(charactersFromFile);
 
-	for (var i in charactersFromFile) {
-		//console.log(charactersFromFile[i] + ' length =' + charactersFromFile[i].length);
-		if (charactersFromFile[i].length > 1) // assumption: there will be no valid character name of length 1
+
+}
+
+function loadCharacters (rawCharacterList) {
+	for (var i in rawCharacterList) {
+		if (rawCharacterList[i].length > 1) // assumption: there will be no valid character name of length 1
 		{
 			characters[i] = {
-				'name': charactersFromFile[i].split(re)[0].replace(re, ''),
-	//			'gender': charactersFromFile[i].split(', ')[1].replace('\r', '') // trimmed on ',' when using the ENSEMBLE-Characters file
+				'name': rawCharacterList[i].split(re)[0].replace(re, '') 	// to remove unnecessary white-space
 			}
 		} else { // if we hit the empty line we're done with the file
 			break;
 		}
-	}
+		setNumberOfRoles(characters.length);
 
-	setNumberOfRoles(characters.length);
-
-	if (characters == undefined) {
-		console.error('characters are missing...');
-		throw new Error('characters are missing');
+		if (characters == undefined) {
+			console.error('characters are missing...');
+			throw new Error('characters are missing');
+		}
 	}
 }
 
@@ -143,15 +142,21 @@ function addRoleToList (singer, role) {
 
 }
 
-function makeAssignmentsByName(singers) {
+function makeAssignmentsByName(singers, song) {
+		reset();
 		if (singers == undefined || singers == '')
 		{
 			singers = 'You';
 		}
 		var singersList = singers.split(', '); // TODO: need to make this more resilient to what ppl will type
-		reset();
+
+
+		if (song != undefined) {
+			loadCharacters(require('./GetAllSongs').findRolesBySong(song).split(', '));
+		}
 
 		possibleCharacters = characters.slice();
+
 		singerNumber = singersList.length;
 		//console.log('our list of singers: ' + singersList);
 		for (var i = 0; i < singerNumber; i++) {
@@ -171,10 +176,12 @@ function createSingers(i, name, possibleCharacters) {
 }
 
 function reset() {
+	characters.splice(0, characters.length); // clean-up characters
 	characterAssignment.splice(0, characterAssignment.length); 	// cleaning any lingering old data
-	possibleCharacters = characters.slice(); 								// lets not touch original list of characters. splice() clons array and returns reference to new array
+	possibleCharacters.splice(0, possibleCharacters.length);
 	singerNumber = 0;
-	//console.log('resetting values');
+	console.log('resetting values');
+	console.log(characterAssignment.length);
 
 }
 
