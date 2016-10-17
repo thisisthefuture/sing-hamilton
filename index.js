@@ -8,6 +8,7 @@ var allSongs = require('./GetAllSongs.js');
 var bodyParser = require('body-parser');
 
 app.set('view engine', 'ejs');
+// views is directory for all template files
 app.set('views', __dirname + '/views');
 app.use(expressLayouts);
 // use res.render to load up an ejs view file
@@ -16,9 +17,6 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true}));
 
 app.set('port', (process.env.PORT || 5000));
-
-// views is directory for all template files
-
 
 
 // index page
@@ -33,12 +31,6 @@ app.get('/', function(req, res) {
     	numberOfCharacters: numberOfCharacters
     });
 });
-
-/* app.post('/pickSong'), function(req, res) {
-		var choosenSong = req.body.songChoice;
-
-};
-*/
 
 app.post('/whosSinging', function(req, res) {
 	var singers = ranChars.makeAssignmentsByName(req.body.singerList, req.body.songChoice);

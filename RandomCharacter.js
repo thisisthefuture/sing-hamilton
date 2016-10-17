@@ -19,12 +19,13 @@ var Singer = function(name) {
 };
 
 
-setup();
 
 if (runFromConsole == 1 && namesFromConsole != undefined) {
+	setup();
 	makeAssignmentsByName(namesFromConsole);
 }
 else if (runFromConsole == 1) {
+	setup();
 	makeAssignmentsByTotalSingers();										// if we're running from the console, make assignments automatically; e.g., not waiting for a GET req
 }
 
@@ -105,16 +106,9 @@ function checkSingerValue(passedSingerNumber, consoleSingerNumber) {
 
 
 function setup () {
-	//var characters = [];
-
-	var charactersFromFile = fs.readFileSync('songs/SONG Alexander Hamilton', 'utf8'); //, function (err, data) {
-		/* if (err) {
-			return console.log(err);
-		}
-		console.log('done reading'); */
+	var charactersFromFile = fs.readFileSync('songs/SONG Alexander Hamilton', 'utf8'); // default song... TODO: clean this up
 	charactersFromFile = charactersFromFile.toString().split('\n');
 	loadCharacters(charactersFromFile);
-
 
 }
 
@@ -135,11 +129,6 @@ function loadCharacters (rawCharacterList) {
 			throw new Error('characters are missing');
 		}
 	}
-}
-
-function addRoleToList (singer, role) {
-	singer.role.push(role.name);
-
 }
 
 function makeAssignmentsByName(singers, song) {
@@ -166,13 +155,27 @@ function makeAssignmentsByName(singers, song) {
 }
 
 function createSingers(i, name, possibleCharacters) {
-		characterAssignment[i] = new Singer(name);	// temporarily using the loop iteration value as the Singer's name
-		//console.log('i ' + i + ' name: ' + name + ' possibleCharacters:' + possibleCharacters);
-		for (var j = i; j < numberOfRoles; j = j + singerNumber) {
-			//console.log('singer# ' + i + ' j = ' + j + ' singer#:' + singerNumber);
-			//console.log('role...' + possibleCharacters[j].name);
-			addRoleToList(characterAssignment[i], possibleCharacters[j]);
+		if (i < numberOfRoles) {
+			characterAssignment[i] = new Singer(name);
+			for (var j = i; j < numberOfRoles; j = j + singerNumber) {
+				addRoleToList(characterAssignment[i], possibleCharacters[j]);
+			}
 		}
+		else {
+			doubleUpRoles(i, name)
+		}
+}
+
+function addRoleToList (singer, role) {
+	singer.role.push(role.name);
+
+}
+
+// let's double up the roles by adding another singer name to the assignment
+function doubleUpRoles(i, name) {
+	var buddyIndex = (i - numberOfRoles) % numberOfRoles;
+	characterAssignment[buddyIndex].name = characterAssignment[buddyIndex].name + ', ' + name;
+
 }
 
 function reset() {
@@ -180,8 +183,6 @@ function reset() {
 	characterAssignment.splice(0, characterAssignment.length); 	// cleaning any lingering old data
 	possibleCharacters.splice(0, possibleCharacters.length);
 	singerNumber = 0;
-	console.log('resetting values');
-	console.log(characterAssignment.length);
 
 }
 
