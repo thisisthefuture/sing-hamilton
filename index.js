@@ -3,7 +3,7 @@ var expressLayouts = require('express-ejs-layouts');
 var http = require('http');
 var app = express();
 var ranChars = require('./RandomCharacter.js');
-var allSongs = require('./getAllSongs.js');
+var allSongs = require('./GetAllSongs.js');
 
 var bodyParser = require('body-parser');
 
