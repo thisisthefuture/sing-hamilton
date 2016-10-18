@@ -1,18 +1,12 @@
-<html>
-	<head>
-		<title>Your assignments?</title>
-	</head>
-	<body>
-		<h1>Song: <%= song %></h1>
+
+		<h2><%= song %></h2>
 
 		<table>
 			<% assignments.forEach(function(el, index) { %>
 			<tr>
-				<td><%= el.name %></td>
+				<td><%= el.name %>: </td>
 				<td><% el.role = el.role.join().replace(/\,/g,', '); %> <%= el.role %> </td>
 			</tr>
 
 			<% }); %>
 		</table>
-	</body>
-</html>

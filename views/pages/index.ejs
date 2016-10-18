@@ -8,20 +8,16 @@
 				</select>
 				<button type="submit">Sing this!</button>
 			</form> -->
-
-			<label for="singerList">Who's singing?</label>
 			<form method="POST" action="/whosSinging">
-				<select name="songChoice">
+			<label for="singerList" class="title">Song: </label>
+				<select id="songs" name="songChoice">
 					<% for (var i = 0 ; i < songList.length ; i++) { %>
 						<option value="<%= songList[i] %>"><%= songList[i] %></option>
-
 					<% } %>
-				</select>
-				<p>
-					<input type="text" class="title" name="singerList" placeholder="alice, sage, ginger">
-				</p>
-					<input type="submit" value="Not throwin' away your shot">
-				
+				</select><br />
+				<label for="singerList" class="title">Who's singing: </label>
+				<input type="text" class="namesInput" name="singerList" placeholder="Alice, Sage, Ginger">
+				<input type="submit" class="button" value="Not throwin' away your shot!">
 			</form>
 
 			<!-- <label>How many people are singing?</label>

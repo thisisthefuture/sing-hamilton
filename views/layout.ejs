@@ -4,13 +4,123 @@
 		<link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection">
 		<link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print">
 		<link rel="stylesheet" href="css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+
+		<style type="text/css">
+		body {
+			font-size: 1.2em;
+		}
+
+		td {
+			vertical-align: top;
+		}
+
+		h1 {
+			font-weight: bolder;
+			margin-bottom: 0.25em;
+		}
+
+		#songs {
+			border: 3px #eee solid;
+			border-radius: 3px;
+			padding: .5em;
+			background: 0 0;
+			position: relative;
+			width: auto;
+			font-size: 125%;
+		}
+
+		#songs:focus {
+			border-color: #666;
+		}
+
+		input[type=text], .namesInput {
+			display: block;
+			width: inherit;
+			font-size: 125%;
+			border: 3px #eee solid;
+			padding: .5em;
+			border-radius: 3px;
+		}
+
+		.container {
+			width: 90%;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.button {
+			width: auto;
+			font-size: 105%;
+			margin: .5em 0;
+			padding: .5em;
+			background-color: #b3cde0;
+			border: 3px #444 solid;
+		}
+
+		.button:focus {
+			background-color: #005b96;
+		}
+
+		.title {
+			font-size: 125%;
+		}
+
+		@media only screen and (max-device-width: 480px) {
+			.container {
+				width: 95%;
+			}
+
+			h1 {
+				font-size: 120px;
+			}
+
+			h2 {
+				font-size: 80px;
+			}
+
+			.title, td {
+				font-size: 80px;
+			}
+
+			.button {
+				width: auto;
+				font-size: 50px;
+				margin: .5em 0;
+				padding: .5em;
+				border: 3px #444 solid;
+				background: 0 0;
+				background-color: #b3cde0;
+			}
+
+			#songs {
+				border: .1em #eee solid;
+				border-radius: 3px;
+				background: none;
+				position: relative;
+				width: 100%;
+				font-size:5em;
+			}
+
+			input[type=text], .namesInput {
+				display: block;
+				width: 100%;
+				border: .1em #eee solid;
+				border-radius: 3px;
+				font-size: 5em;
+				padding: .5em;
+				background: 0 0;
+			}
+
+		}
+		</style>
+
 <!--[if lt IE 8]>
 	  <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
 <![endif]-->
 	</head>
 	<body>
 		<div class="container">
-
+			<h1>Sing Hamilton!</h1>
       <%- body %>
 
     </div>
