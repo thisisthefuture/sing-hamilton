@@ -36,7 +36,14 @@
 		#assignments {
 				width: auto;
 		}
-		
+
+		.container {
+			width: 600px;
+			margin-top: 10px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
 		input[type=text], .namesInput {
 			display: block;
 			width: inherit;
@@ -46,11 +53,6 @@
 			border-radius: 3px;
 		}
 
-		.container {
-			width: 90%;
-			margin-left: auto;
-			margin-right: auto;
-		}
 
 		.button {
 			width: auto;
@@ -124,7 +126,9 @@
 	</head>
 	<body>
 		<div class="container">
-			<h1>Sing Hamilton!</h1>
+			<div id="sidebar">
+				<h1>Sing Hamilton!</h1>
+			</div>
       <%- body %>
 
     </div>
